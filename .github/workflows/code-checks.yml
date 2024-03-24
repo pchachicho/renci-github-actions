@@ -33,7 +33,7 @@ on:
   #     - master
   #     - main 
   #   types: [ opened, synchronize ]
-    workflow_call
+    workflow_call:
 
 
 
