@@ -12,27 +12,29 @@
 #
 
 name: Code-Checks
-on:
-  push:
-    branches-ignore:
-      - master
-      - main
-      - develop
-    paths-ignore:
-      - README.md
-      - .old_cicd/*
-      # - .github/*
-      # - .github/workflows/*
-      - LICENSE
-      - .gitignore
-      - .dockerignore
-      - .githooks
-  pull_request:
-    branches:
-      - develop
-      - master
-      - main 
-    types: [ opened, synchronize ]
+on: 
+  # push:
+  #   branches-ignore:
+  #     - master
+  #     - main
+  #     - develop
+  #   paths-ignore:
+  #     - README.md
+  #     - .old_cicd/*
+  #     # - .github/*
+  #     # - .github/workflows/*
+  #     - LICENSE
+  #     - .gitignore
+  #     - .dockerignore
+  #     - .githooks
+  # pull_request:
+  #   branches:
+  #     - develop
+  #     - master
+  #     - main 
+  #   types: [ opened, synchronize ]
+    workflow_call
+
 
 
 jobs:
