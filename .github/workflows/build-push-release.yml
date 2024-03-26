@@ -90,9 +90,9 @@ jobs:
         # Push to renci-registry and dockerhub here.
         # cache comes from dockerhub.
         tags: |
-          containers.renci.org/${{ github.repository }}:v${{ steps.version.outputs.version }}
-          containers.renci.org/${{ github.repository }}:latest
-          containers.renci.org/${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
+          # containers.renci.org/${{ github.repository }}:v${{ steps.version.outputs.version }}
+          # containers.renci.org/${{ github.repository }}:latest
+          # containers.renci.org/${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
           ${{ github.repository }}:v${{ steps.version.outputs.version }}
           ${{ github.repository }}:latest
           ${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
