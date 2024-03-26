@@ -96,8 +96,8 @@ jobs:
           ${{ github.repository }}:v${{ steps.version.outputs.version }}
           ${{ github.repository }}:latest
           ${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
-        cache-from: type=registry,ref=${{ github.repository }}:buildcache-release
-        cache-to: type=registry,ref=${{ github.repository }}:buildcache-release,mode=max
+        cache-from: type=registry,ref=${{ github.repository }}:buildcache
+        cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
 
 #==========================TAG & RELEASE W/ NOTES =========================
 
