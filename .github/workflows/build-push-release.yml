@@ -73,13 +73,13 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         logout: true
 
-    - name: Login to Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: containers.renci.org
-        username: ${{ secrets.CONTAINERHUB_USERNAME }}
-        password: ${{ secrets.CONTAINERHUB_TOKEN }}
-        logout: true
+    # - name: Login to Container Registry
+    #   uses: docker/login-action@v3
+    #   with:
+    #     registry: containers.renci.org
+    #     username: ${{ secrets.CONTAINERHUB_USERNAME }}
+    #     password: ${{ secrets.CONTAINERHUB_TOKEN }}
+    #     logout: true
 
     # Notes on Cache: 
     # https://docs.docker.com/build/ci/github-actions/examples/#inline-cache
