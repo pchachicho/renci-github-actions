@@ -100,7 +100,5 @@ jobs:
         tags: |
           ${{ github.repository }}:develop
           ${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
-          # containers.renci.org/${{ github.repository }}:develop
-          # containers.renci.org/${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
         cache-from: type=registry,ref=${{ github.repository }}:buildcache-dev
         cache-to: type=registry,ref=${{ github.repository }}:buildcache-dev,mode=max
