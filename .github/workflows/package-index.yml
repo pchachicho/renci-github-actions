@@ -2,7 +2,7 @@
 # This workflow will only be triggered in the context of the 'develop branch'
 name: package-index
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       appRepo:
         description: '🛑 NOT FOR MANUAL USE!!! Repo of the newly updated Helm Chart.'
