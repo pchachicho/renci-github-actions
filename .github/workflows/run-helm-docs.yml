@@ -1,0 +1,40 @@
+# On pull request, ensure helm-docs is being run
+
+name: Run-Helm-Docs
+on:
+  workflow_call:
+jobs:
+  run-helm-docs:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }} 
+        fetch-depth: 0
+
+    - name: Download Helm-Docs
+      run: |
+        wget https://github.com/norwoodj/helm-docs/releases/download/v1.11.0/helm-docs_1.11.0_Linux_x86_64.tar.gz
+        tar -xvf helm-docs_1.11.0_Linux_x86_64.tar.gz
+        mv helm-docs /usr/local/bin/
+        chmod +x /usr/local/bin/helm-docs 
+
+
+    - name: Create Helm-Docs README.md
+      run: | 
+        helm-docs
+
+    - name: Cleanup Helm-Docs
+      run: |
+        rm helm-docs_*
+
+    - name: Commit Chart.yaml Changes
+      uses: EndBug/add-and-commit@v9
+      env:
+        GH_TOKEN: ${{ github.token }}
+      with:
+        author_name: Actions_${{ github.actor}}
+        message: 'Running helm-docs and adding updated Readme.mds if any'
+        add: -A
