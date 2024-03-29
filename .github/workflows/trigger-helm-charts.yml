@@ -1,6 +1,7 @@
 # This chart catches changes and then pushed to main branch
 # Tests, Updates Dependency and Packages, then pushes to 
 # our parent repo that holds all Helx Charts Helm-Charts
+# Used by Appstore-charts and Helx-Charts
 
 name: Trigger-Helm-Charts
 on:
