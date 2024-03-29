@@ -1,0 +1,31 @@
+# This chart catches changes and then pushed to main branch
+# Tests, Updates Dependency and Packages, then pushes to 
+# our parent repo that holds all Helx Charts Helm-Charts
+
+name: Trigger-Helm-Charts
+on:
+  push:
+    branches:
+      - main 
+      - master
+    paths-ignore:
+      - .github/workflows/*
+      - .github/*
+jobs:
+  trigger-helm-charts:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Trigger Helm-Charts Workflow
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: | 
+        gh --repo https://github.com/helxplatform/helm-charts \
+        workflow run package-index.yml \
+        -f appRepo=${{ github.repository }} \
+        -f actor=${{ github.actor }} \
+        --ref develop
+
+
+    
+
