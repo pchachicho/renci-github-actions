@@ -1,11 +1,11 @@
 # Workflow responsible for the 
 # development release processes.
-#
+# Workflow is being called by appstore and helx-ui
 
 name: Build-Push-Dev-Image
 on:
   workflow_call:
-  # push:
+  push:
   #   branches:
   #     - develop
   #   paths-ignore:

@@ -1,6 +1,6 @@
 # Workflow responsible for the 
 # major release processes.
-#
+# Workflow is being called by appstore and helx-ui
 
 name: Build-Push-Release
 on:
