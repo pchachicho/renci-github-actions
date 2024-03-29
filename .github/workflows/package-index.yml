@@ -1,0 +1,117 @@
+# Designed to be triggered by github action application chart
+# This workflow will only be triggered in the context of the 'develop branch'
+name: package-index
+on:
+  workflow_dispatch:
+    inputs:
+      appRepo:
+        description: '🛑 NOT FOR MANUAL USE!!! Repo of the newly updated Helm Chart.'
+        required: true
+        type: string
+      actor:
+        description: 'The username who caused the update to helm-charts on another repo'
+        required: true
+        type: string
+
+jobs:
+  clone-package-index:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }} 
+        fetch-depth: 0
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.11.2
+
+    - name: Clone App Repo 
+      run: |
+        mkdir /tmp/${{ github.repository_owner }}
+        cd /tmp/${{ github.repository_owner }}
+        git clone https://github.com/${{ inputs.appRepo }}.git .
+
+
+    # Below we package everything up for helx-charts package and 
+    # for each chart to be individually indexed from helm-charts itself.
+    - name: Check for Helx-Charts Package Updates
+      if: ${{ inputs.appRepo == 'helxplatform/helx-chart'}}
+      run: |
+        cd /tmp/${{ github.repository_owner }}
+        helm repo add helx-charts https://helxplatform.github.io/helm-charts
+        helm repo update
+        helm dependency update
+        echo "Check AppVersions Before Merging to Docs"
+        HELX_CHART=("ambassador" "backup-pvc-cronjob" "image-utils" "nfs-server" "nfsrods" "nginx" "pod-reaper" "resty" )
+        for APP in ${HELX_CHART[@]}; do
+          helm package --dependency-update charts/$APP
+          DOCS_VERSION=$(ls ${{ github.workspace }}/docs | grep $APP | sort -V | tail -n 1)
+          CHART_VERSION=$(ls /tmp/${{ github.repository_owner }} | grep -i '.tgz' | grep $APP )
+          echo "INFO: DOCS_VERSION: $DOCS_VERSION CHART_VERSION: $CHART_VERSION"
+          if [[ $DOCS_VERSION != $CHART_VERSION ]]; then
+            helm package --dependency-update charts/$APP --destination ${{ github.workspace }}/docs
+            helm package --dependency-update charts/$APP --destination /tmp/pkg
+          else
+            echo "$DOCS_VERSION is same as $CHART_VERSION, skipping add to docs ..."
+          fi
+        done 
+
+    # Helx-Chart is needed for Search-Chart dependencies so adding here.
+    - name: Add Helx-Chart
+      if: ${{ inputs.appRepo == 'helxplatform/search-chart'}}
+      run: |
+        helm repo add helx-charts https://helxplatform.github.io/helm-charts
+        helm repo update helx-charts
+
+    # The package is also added to /tmp/pkg just so we can easily get the name in the 'Get Package Name' step and to 
+    # ensure index step works as expected.  
+    - name: Package Chart 
+      run: |
+        cd /tmp
+        helm package --dependency-update ./${{ github.repository_owner }} --destination ${{ github.workspace }}/docs 
+        helm package --dependency-update ./${{ github.repository_owner }} --destination /tmp/pkg
+
+    # The flag --merge doesn't have good documentation in helm official site
+    # See: https://github.com/helm/helm/issues/4482#issuecomment-452013778 
+    - name: Index Package
+      run: | 
+        helm repo index --url=https://helxplatform.github.io/helm-charts/ --merge ${{ github.workspace }}/docs/index.yaml /tmp/pkg
+        mv /tmp/pkg/index.yaml ${{ github.workspace }}/docs
+
+
+    - name: Get package name
+      id: package
+      run: | 
+        echo "package=$(ls /tmp/pkg | grep -i '.tgz' | head -1)" >> "$GITHUB_OUTPUT"
+        
+    - name: Commit index changes to develp branch
+      if: ${{ inputs.appRepo != 'helxplatform/helx-chart'}}
+      uses: EndBug/add-and-commit@v9
+      env:
+        GH_TOKEN: ${{ github.token }}
+      with:
+        new_branch: actions/${{ steps.package.outputs.package }}
+        author_name: ${{ github.actor}}
+        message: "Adding ${{ steps.package.outputs.package }} and new index.yaml"
+        add: "${{ github.workspace }}/docs/index.yaml ${{ github.workspace }}/docs/${{ steps.package.outputs.package }}"
+
+    - name: Commit Helx-Charts individual packages
+      if: ${{ inputs.appRepo == 'helxplatform/helx-chart'}}
+      uses: EndBug/add-and-commit@v9
+      env:
+        GH_TOKEN: ${{ github.token }}
+      with:
+        new_branch: actions/${{ steps.package.outputs.package }}
+        author_name: ${{ github.actor}}
+        message: "Adding helx-chart apps, ${{ steps.package.outputs.package }} and index.yaml"
+        add: "-A"
+          
+    - name: Create New CI Pull Request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh pr create --fill --base develop --head actions/${{ steps.package.outputs.package }} --reviewer ${{ inputs.actor }} --reviewer pj-linebaugh --reviewer waTeim --reviewer YaphetKG

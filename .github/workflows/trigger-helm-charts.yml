@@ -4,13 +4,7 @@
 
 name: Trigger-Helm-Charts
 on:
-  push:
-    branches:
-      - main 
-      - master
-    paths-ignore:
-      - .github/workflows/*
-      - .github/*
+  workflow_call:
 jobs:
   trigger-helm-charts:
     runs-on: ubuntu-latest

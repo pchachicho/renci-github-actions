@@ -19,7 +19,7 @@
 
 name: Bump-Chart-Versions
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       appVersion:
         description: 'Application version for Helm Chart to use. If unset, workflow uses github api to obtain newest version tag.'
