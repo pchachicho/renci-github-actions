@@ -33,7 +33,7 @@ jobs:
         done
     - name: Trigger Helm-Charts Workflow
       env: 
-        GH_TOKEN: ${{ env.GH_TOKEN }}
+        GH_TOKEN: ${{ github.token }}
       run: | 
         gh --repo https://github.com/pchachicho/helm-charts-actions \
         workflow run package-index.yml \
