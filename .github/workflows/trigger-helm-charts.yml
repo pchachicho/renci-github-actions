@@ -6,6 +6,15 @@
 name: Trigger-Helm-Charts
 on:
   workflow_call:
+    inputs:
+      appRepo:
+        description: '🛑 NOT FOR MANUAL USE!!! Repo of the newly updated Helm Chart.'
+        required: true
+        type: string
+      actor:
+        description: 'The username who caused the update to helm-charts on another repo'
+        required: true
+        type: string
 jobs:
   trigger-helm-charts:
     runs-on: ubuntu-latest
@@ -17,8 +26,8 @@ jobs:
       run: | 
         gh --repo https://github.com/pchachicho/helm-charts-actions \
         workflow run package-index.yml \
-        -f appRepo=${{ github.repository }} \
-        -f actor=${{ github.actor }} \
+        -f appRepo=${{ inputs.appRepo }} \
+        -f actor=${{ inputs.actor }} \
         --ref develop
 
 
