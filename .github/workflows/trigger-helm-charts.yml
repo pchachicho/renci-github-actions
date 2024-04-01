@@ -15,7 +15,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: | 
-        gh --repo https://github.com/helxplatform/helm-charts \
+        gh --repo https://github.com/pchachicho/helm-charts-actions \
         workflow run package-index.yml \
         -f appRepo=${{ github.repository }} \
         -f actor=${{ github.actor }} \
