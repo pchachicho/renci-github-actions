@@ -6,9 +6,20 @@
 name: Trigger-Helm-Charts
 on:
   workflow_call:
-    secrets:
-      env_vars:
+    # secrets:
+    #   env_vars:
+    #     required: true
+
+    inputs:
+      appRepo:
+        description: 'The name of the GitHub repository.'
+        type: string
         required: true
+      actor:
+        description: 'The GitHub actor name.'
+        type: string
+        required: true
+
     # inputs:
     #   appRepo:
     #     description: '🛑 NOT FOR MANUAL USE!!! Repo of the newly updated Helm Chart.'
@@ -19,35 +30,21 @@ on:
     #     required: true
     #     type: string
 jobs:
-  trigger-helm-charts:
-    env:
-      env_vars: ${{ secrets.env_vars }}
+  example_job:
     runs-on: ubuntu-latest
     steps:
-    - name: Decode credentials as environment variables
-      run: |
-        for i in $env_vars; do
-          i=$(echo $i | sed 's/=.*//g')=$(echo ${i#*=} | base64 -di | base64 -di)
-          echo ::add-mask::${i#*=}
-          printf '%s\n' "$i" >> $GITHUB_ENV
-        done
-    - name: Trigger Helm-Charts Workflow
-      env: 
-        GH_TOKEN: ${{ github.token }}
-      run: | 
-        gh --repo https://github.com/pchachicho/helm-charts-actions \
-        workflow run package-index.yml \
-        -f appRepo=${{ env.APPREPO }} \
-        -f actor=${{ env.ACTOR }} \
-        --ref develop
-
-
-    
-
-        - name: Decode credentials as environment variables
+      - name: Print Repository Name
         run: |
-          for i in $env_vars; do
-            i=$(echo $i | sed 's/=.*//g')=$(echo ${i#*=} | base64 -di | base64 -di)
-            echo ::add-mask::${i#*=}
-            printf '%s\n' "$i" >> $GITHUB_ENV
-          done
+           echo "Repository: ${{ inputs.appRepo }}"
+      - name: Print Actor Name
+        run: |
+          echo "Actor: ${{ inputs.appRepo }}"
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: the important stuff
+        run: | 
+          gh --repo https://github.com/pchachicho/helm-charts-actions \
+          workflow run package-index.yml \
+          -f appRepo=${{ inputs.appRepo }} \
+          -f actor=${{ inputs.actor }} \
+          --ref develop
