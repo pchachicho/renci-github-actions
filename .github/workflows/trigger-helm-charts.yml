@@ -40,7 +40,7 @@ jobs:
         run: |
           echo "Actor: ${{ inputs.appRepo }}"
         env: 
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: the important stuff
         run: | 
           gh --repo https://github.com/pchachicho/helm-charts-actions \
