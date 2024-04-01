@@ -39,9 +39,9 @@ jobs:
       - name: Print Actor Name
         run: |
           echo "Actor: ${{ inputs.appRepo }}"
-        env: 
-          GH_TOKEN: ${{ github.token }}
       - name: the important stuff
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | 
           gh --repo https://github.com/pchachicho/helm-charts-actions \
           workflow run package-index.yml \
