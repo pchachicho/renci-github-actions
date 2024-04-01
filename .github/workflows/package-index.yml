@@ -39,7 +39,7 @@ jobs:
     # Below we package everything up for helx-charts package and 
     # for each chart to be individually indexed from helm-charts itself.
     - name: Check for Helx-Charts Package Updates
-      if: ${{ inputs.appRepo == 'helxplatform/helx-chart'}}
+      if: ${{ inputs.appRepo == 'pchachicho/helx-chart-actions'}}
       run: |
         cd /tmp/${{ github.repository_owner }}
         helm repo add helx-charts https://helxplatform.github.io/helm-charts
@@ -89,7 +89,7 @@ jobs:
         echo "package=$(ls /tmp/pkg | grep -i '.tgz' | head -1)" >> "$GITHUB_OUTPUT"
         
     - name: Commit index changes to develp branch
-      if: ${{ inputs.appRepo != 'helxplatform/helx-chart'}}
+      if: ${{ inputs.appRepo != 'pchachicho/helx-chart-actions'}} 
       uses: EndBug/add-and-commit@v9
       env:
         GH_TOKEN: ${{ github.token }}
@@ -100,7 +100,7 @@ jobs:
         add: "${{ github.workspace }}/docs/index.yaml ${{ github.workspace }}/docs/${{ steps.package.outputs.package }}"
 
     - name: Commit Helx-Charts individual packages
-      if: ${{ inputs.appRepo == 'helxplatform/helx-chart'}}
+      if: ${{ inputs.appRepo == 'pchachicho/helx-chart-actions'}}
       uses: EndBug/add-and-commit@v9
       env:
         GH_TOKEN: ${{ github.token }}
