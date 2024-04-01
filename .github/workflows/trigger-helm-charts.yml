@@ -6,10 +6,6 @@
 name: Trigger-Helm-Charts
 on:
   workflow_call:
-    # secrets:
-    #   env_vars:
-    #     required: true
-
     inputs:
       appRepo:
         description: 'The name of the GitHub repository.'
@@ -19,6 +15,9 @@ on:
         description: 'The GitHub actor name.'
         type: string
         required: true
+      # secrets:
+      #   GH_TOKEN: 
+      #    required: true
 
     # inputs:
     #   appRepo:
