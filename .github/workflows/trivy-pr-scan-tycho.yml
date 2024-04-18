@@ -21,7 +21,7 @@ jobs:
  trivy-pr-scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # We will not be concerned with Medium and Low vulnerabilities
     - name: Run Trivy vulnerability scanner
