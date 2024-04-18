@@ -7,6 +7,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "pchachicho"
