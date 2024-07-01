@@ -84,7 +84,7 @@ jobs:
     # Notes on Cache: 
     # https://docs.docker.com/build/ci/github-actions/examples/#inline-cache
     - name: Build Push Container
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         push: true
         # Push to renci-registry and dockerhub here.
