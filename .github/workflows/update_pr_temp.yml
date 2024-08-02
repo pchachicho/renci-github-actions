@@ -25,4 +25,5 @@ jobs:
 
     - name: Fetch OWASP Top 10
       run: |
-        python fetch_owasp_top_ten.py
+        python .github/fetch_owasp_top_ten.py
+        
