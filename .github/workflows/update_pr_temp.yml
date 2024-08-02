@@ -27,6 +27,7 @@ jobs:
       run: |
         touch owasp_top_ten.txt
         python .github/fetch_owasp_top_ten.py
+        cat .github/pull_request_template.md
 
     # - name: Update PR template
     #   run: |
