@@ -1,11 +1,13 @@
 name: Fetch OWASP Top 10
 
 on:
+    # schedule:
+    #     - cron: '0 0 * * 1' # This runs the action every Monday at midnight
   workflow_dispatch:
 
 permissions:
     contents: write
-    
+
 jobs:
   fetch-owasp-top-ten:
     runs-on: ubuntu-latest
