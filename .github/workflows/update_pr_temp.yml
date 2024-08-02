@@ -26,8 +26,9 @@ jobs:
     - name: Fetch OWASP Top 10
       run: |
         python .github/fetch_owasp_top_ten.py
-        - name: Update PR template
-        run: |
+        
+    - name: Update PR template
+      run: |
          owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
          echo "OWASP Top Ten:"
          echo "$owasp_top_ten"
