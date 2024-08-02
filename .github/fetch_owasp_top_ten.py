@@ -1,18 +1,19 @@
 import requests
-from bs4 import BeautifulSoup
 
-url = "https://owasp.org/www-project-top-ten/"
+# URL of the raw Markdown file
+url = "https://raw.githubusercontent.com/OWASP/www-project-api-security/master/index.md"
+
 response = requests.get(url)
 
 if response.status_code == 200:
-    soup = BeautifulSoup(response.text, 'html.parser')
-    # Adjust the selector based on the actual HTML structure of the page
-    owasp_items = soup.select('a[href*="www-project-top-ten/"]')
-
+    # Write the raw Markdown content to a file
     with open('owasp_top_ten.txt', 'w') as f:
-        for item in owasp_items:
-            title = item.text.strip()
-            f.write(f"{title}\n")
-else:
-    print("Failed to retrieve OWASP Top 10 data")
+        f.write(response.text)
+    
+    # Optional: Print the first few lines of the Markdown file to verify
+    print("Fetched OWASP Top Ten data:")
+    print("\n".join(response.text.splitlines()[:10]))  # Print first 10 lines for review
 
+else:
+    print(f"Failed to retrieve OWASP Top Ten data. Status code: {response.status_code}")
+    exit(1)
