@@ -21,7 +21,7 @@ jobs:
       - name: Update PR template
         run: |
           owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
-          sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/pull_request_template.md
+          sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/PULL_REQUEST_TEMPLATE.md
 
       - name: Commit and push changes
         run: |
