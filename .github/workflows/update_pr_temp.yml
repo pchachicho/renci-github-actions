@@ -37,7 +37,6 @@ jobs:
         printf '%s' "$owasp_top_ten" | sed 's/[&/\]/\\&/g'  
         sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/pull_request_template.md
         echo "Updated PR Template:"
-        cat .github/pull_request_template.md
 
     - name: Clean up
       run: |
