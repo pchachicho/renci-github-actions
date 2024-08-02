@@ -34,6 +34,6 @@ jobs:
         run: |
           git config --global user.name "pchachicho"
           git config --global user.email "hachichopatrick@gmail.com"
-          git add /.github/pull_request_template.md
+          git add .github/pull_request_template.md
           git commit -m "Update PR template with latest OWASP Top Ten"
           git push
