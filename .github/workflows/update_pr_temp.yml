@@ -18,6 +18,13 @@ jobs:
         run: |
           curl -s https://owasp.org/www-project-top-ten/ | grep -oP '(?<=<h2>Top 10:)[^<]+' | head -n 10 > owasp_top_ten.txt
 
+      - name: Print Directory Contents
+        run: |
+         echo "Printing repository directory structure:"
+         ls -R
+         echo "Printing .github directory contents:"
+         ls -R .github
+
       - name: Update PR template
         run: |
           owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
