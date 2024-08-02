@@ -20,8 +20,12 @@ jobs:
 
       - name: Update PR template
         run: |
-          owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
-          sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/pull_request_template.md
+         owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
+         echo "OWASP Top Ten:"
+         echo "$owasp_top_ten"
+         sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/pull_request_template.md
+         echo "Updated PR Template:"
+         cat .github/pull_request_template.mdmd
 
       - name: Clean up
         run: |
@@ -32,5 +36,6 @@ jobs:
           git config --global user.name "pchachicho"
           git config --global user.email "hachichopatrick@gmail.com"
           git add .github/pull_request_template.md
+          git diff --cached
           git commit -m "Update PR template with latest OWASP Top Ten"
           git push
