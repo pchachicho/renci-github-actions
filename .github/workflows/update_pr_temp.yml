@@ -16,7 +16,7 @@ jobs:
       - name: Fetch OWASP Top Ten
         id: fetch_owasp
         run: |
-          curl -s https://owasp.org/www-project-top-ten/ | grep -oP '(?<=<h2>Top 10:)[^<]+' | head -n 10 > owasp_top_ten.txt
+         curl -s https://raw.githubusercontent.com/OWASP/Top10/master/2021/en/src.json | jq -r '.chapters[].title' > owasp_top_ten.txt
 
       - name: Update PR template
         run: |
@@ -39,3 +39,5 @@ jobs:
           git diff --cached
           git commit -m "Update PR template with latest OWASP Top Ten"
           git push
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
