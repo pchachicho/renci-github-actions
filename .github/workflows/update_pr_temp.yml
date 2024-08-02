@@ -10,8 +10,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with: 
-       ${{ secrets.GH_PAT }}
         
 
     - name: Setup Python
@@ -44,6 +42,8 @@ jobs:
         rm owasp_top_ten.txt
 
     - name: Commit and push changes
+      env: 
+       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: |
         git config --global user.name "pchachicho"
         git config --global user.email "hachichopatrick@gmail.com"
