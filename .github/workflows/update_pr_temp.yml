@@ -25,6 +25,7 @@ jobs:
 
     - name: Fetch OWASP Top 10
       run: |
+        touch owasp_top_ten.txt
         python .github/fetch_owasp_top_ten.py
 
     - name: Update PR template
