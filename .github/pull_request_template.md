@@ -1,0 +1,1 @@
+[The OWASP Top Ten list will be fetched and updated by a GitHub Action.]
