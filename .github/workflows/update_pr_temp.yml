@@ -45,6 +45,7 @@ jobs:
         rm owasp_top_ten.txt
 
     - name: Commit and push changes to a new branch
+      id: commit_and_push
       env: 
         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: |
@@ -52,7 +53,7 @@ jobs:
         git config --global user.email "hachichopatrick@gmail.com"
         
         # Create a new branch
-        branch_name="update-owasp-top-ten-$(date +'%Y%m%d%H%M%S')"
+        branch_name="update-owasp-top-ten-$(date +'%Y-%m-%d%')"
         git checkout -b $branch_name
         
         # Add changes
@@ -61,6 +62,7 @@ jobs:
         
         # Push to new branch
         git push -u origin $branch_name
+        echo "::set-output name=branch_name::$branch_name"
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
