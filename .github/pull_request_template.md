@@ -113,17 +113,4 @@ transmit the work, and you can adapt it, and use it commercially, but all
 provided that you attribute the work and if you alter, transform, or build upon
 this work, you may distribute the resulting work only under the same or similar
 license to this one.
-
-[license]: https://creativecommons.org/licenses/by-sa/4.0/
-[API1:2023]: https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/
-[API2:2023]: https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/
-[API3:2023]: https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/
-[API3:2019]: https://owasp.org/API-Security/editions/2019/en/0xa3-excessive-data-exposure/
-[API6:2019]: https://owasp.org/API-Security/editions/2019/en/0xa6-mass-assignment/
-[API4:2023]: https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/
-[API5:2023]: https://owasp.org/API-Security/editions/2023/en/0xa5-broken-function-level-authorization/
-[API6:2023]: https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/
-[API7:2023]: https://owasp.org/API-Security/editions/2023/en/0xa7-server-side-request-forgery/
-[API8:2023]: https://owasp.org/API-Security/editions/2023/en/0xa8-security-misconfiguration/
-[API9:2023]: https://owasp.org/API-Security/editions/2023/en/0xa9-improper-inventory-management/
-[API10:2023]: https://owasp.org/API-Security/editions/2023/en/0xaa-unsafe-consumption-of-apis/
+\
