@@ -112,5 +112,4 @@ Attribution-ShareAlike 4.0 license][license], so you can copy, distribute and
 transmit the work, and you can adapt it, and use it commercially, but all
 provided that you attribute the work and if you alter, transform, or build upon
 this work, you may distribute the resulting work only under the same or similar
-license to this one.
-\
+license to this o
