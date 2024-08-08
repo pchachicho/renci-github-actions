@@ -1,43 +1,58 @@
-name: Update PR Template
+name: Fetch OWASP Top 10
 
 on:
-  schedule:
-    - cron: '0 0 * * 1' # This runs the action every Monday at midnight
-  workflow_dispatch: # This allows you to run the workflow manually
+    # schedule:
+    #     - cron: '0 0 * * 1' # This runs the action every Monday at midnight
+  workflow_dispatch:
+
+permissions:
+    contents: write
 
 jobs:
-  update-template:
+  fetch-owasp-top-ten:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+        
 
-      - name: Fetch OWASP Top Ten
-        id: fetch_owasp
-        run: |
-         curl -s https://raw.githubusercontent.com/OWASP/Top10/master/2021/en/src.json | jq -r '.chapters[].title' > owasp_top_ten.txt
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Update PR template
-        run: |
-         owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
-         echo "OWASP Top Ten:"
-         echo "$owasp_top_ten"
-         sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/pull_request_template.md
-         echo "Updated PR Template:"
-         cat .github/pull_request_template.md
+    - name: Install dependencies
+      run: |
+        pip install requests beautifulsoup4
 
-      - name: Clean up
-        run: |
-         rm owasp_top_ten.txt
+    - name: Fetch OWASP Top 10
+      run: |
+        touch owasp_top_ten.txt
+        python .github/fetch_owasp_top_ten.py
+        cat .github/pull_request_template.md
 
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "pchachicho"
-          git config --global user.email "hachichopatrick@gmail.com"
-          git add .github/pull_request_template.md
-          git diff --cached
-          git commit -m "Update PR template with latest OWASP Top Ten"
-          git push
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Update PR template
+    #   run: |
+    #     owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
+    #     echo "OWASP Top Ten:"
+    #     echo "$owasp_top_ten"
+    #     echo "Debug: escaping special characters"
+    #     printf '%s' "$owasp_top_ten" | sed 's/[&/\]/\\&/g'  
+    #     sed -i "s|\[The OWASP Top Ten list will be fetched and updated by a GitHub Action.\]|$owasp_top_ten|" .github/pull_request_template.md
+    #     echo "Updated PR Template:"
+
+    - name: Clean up
+      run: |
+        rm owasp_top_ten.txt
+
+    - name: Commit and push changes
+      env: 
+       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      run: |
+        git config --global user.name "pchachicho"
+        git config --global user.email "hachichopatrick@gmail.com"
+        git add .github/pull_request_template.md
+        git diff --cached
+        git commit -m "Update PR template with latest OWASP Top Ten"
+        git push 
