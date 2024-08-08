@@ -45,7 +45,6 @@ jobs:
         rm owasp_top_ten.txt
 
     - name: Commit and push changes to a new branch
-      id: commit_and_push
       env: 
         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: |
@@ -62,13 +61,12 @@ jobs:
         
         # Push to new branch
         git push -u origin $branch_name
-        echo "::set-output name=branch_name::$branch_name"
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GH_PAT }}
-        branch: ${{ steps.commit_and_push.outputs.branch_name }}
+        branch: $branch_name
         title: "Update PR template with latest OWASP Top Ten"
         body: "This PR updates the PR template with the latest OWASP Top Ten."
         base: main
