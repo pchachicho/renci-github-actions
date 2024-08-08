@@ -53,7 +53,7 @@ jobs:
         git config --global user.email "hachichopatrick@gmail.com"
         
         # Create a new branch
-        branch_name="update-owasp-top-ten-$(date +'%Y-%m-%d%')"
+        branch_name="update-owasp-top-ten-$(date +'%Y-%m-%d')"
         git checkout -b $branch_name
         
         # Add changes
@@ -68,7 +68,7 @@ jobs:
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GH_PAT }}
-        branch: $branch_name
+        branch: ${{ steps.commit_and_push.outputs.branch_name }}
         title: "Update PR template with latest OWASP Top Ten"
         body: "This PR updates the PR template with the latest OWASP Top Ten."
         base: main
