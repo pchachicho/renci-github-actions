@@ -1,12 +1,10 @@
 name: Fetch OWASP Top 10
 
 on:
-    # schedule:
-    #     - cron: '0 0 * * 1' # This runs the action every Monday at midnight
   workflow_dispatch:
 
 permissions:
-    contents: write
+  contents: write
 
 jobs:
   fetch-owasp-top-ten:
@@ -14,11 +12,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-        
+      uses: actions/checkout@v4
 
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
 
@@ -32,7 +29,8 @@ jobs:
         python .github/fetch_owasp_top_ten.py
         cat .github/pull_request_template.md
 
-    # - name: Update PR template
+
+      # - name: Update PR template
     #   run: |
     #     owasp_top_ten=$(cat owasp_top_ten.txt | awk '{print "- " $0}' | paste -sd '\n' -)
     #     echo "OWASP Top Ten:"
@@ -46,13 +44,29 @@ jobs:
       run: |
         rm owasp_top_ten.txt
 
-    - name: Commit and push changes
+    - name: Commit and push changes to a new branch
       env: 
-       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: |
         git config --global user.name "pchachicho"
         git config --global user.email "hachichopatrick@gmail.com"
+        
+        # Create a new branch
+        branch_name="update-owasp-top-ten-$(date +'%Y-%m-%d')"
+        git checkout -b $branch_name
+        
+        # Add changes
         git add .github/pull_request_template.md
-        git diff --cached
         git commit -m "Update PR template with latest OWASP Top Ten"
-        git push 
+        
+        # Push to new branch
+        git push -u origin $branch_name
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GH_PAT }}
+        branch: $branch_name
+        title: "Update PR template with latest OWASP Top Ten"
+        body: "This PR updates the PR template with the latest OWASP Top Ten."
+        base: main
