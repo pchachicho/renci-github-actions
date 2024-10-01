@@ -63,7 +63,7 @@ jobs:
         git push -u origin $branch_name
 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GH_PAT }}
         branch: $branch_name
