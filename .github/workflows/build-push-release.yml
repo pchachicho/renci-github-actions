@@ -112,7 +112,7 @@ jobs:
     # This creates a "lightweight" ref tag.
     - name: Create Tag for Release
       run: |
-        curl \
+        curl \ -v
         -s --fail -X POST \
         -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
         https://api.github.com/repos/${{ github.repository }}/git/refs \
