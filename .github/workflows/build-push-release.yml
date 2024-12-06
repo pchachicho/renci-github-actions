@@ -81,6 +81,12 @@ jobs:
     #     password: ${{ secrets.CONTAINERHUB_TOKEN }}
     #     logout: true
 
+    - name: Parse Github Reference Name
+      id: branch
+      run: |
+        REF=${{ github.ref_name }}
+        echo "GHR=${REF%/*}" >> $GITHUB_OUTPUT
+
     # Notes on Cache: 
     # https://docs.docker.com/build/ci/github-actions/examples/#inline-cache
     - name: Build Push Container
@@ -91,7 +97,7 @@ jobs:
         # cache comes from dockerhub.
         tags: |
           ${{ github.repository }}:v${{ steps.version.outputs.version }}
-          ${{ github.repository }}:latest
+          ${{ github.repository }}:${{ steps.branch.outputs.GHR }}
           ${{ github.repository }}:${{ steps.vars.outputs.short_sha }}
         cache-from: type=registry,ref=${{ github.repository }}:buildcache
         cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
