@@ -42,7 +42,7 @@ jobs:
   flake8-linter:
     runs-on: ubuntu-latest
     concurrency:
-      group: code-checks
+      group: ${{ github.workflow }}-${{ github.ref }}-codechecks1
       cancel-in-progress: true
     # if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
@@ -79,7 +79,7 @@ jobs:
   test-image-build:
     runs-on: ubuntu-latest
     concurrency:
-      group: code-checks1
+      group: ${{ github.workflow }}-${{ github.ref }}-codechecks1
       cancel-in-progress: true
     # if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
@@ -110,7 +110,6 @@ jobs:
       run: |
         REF=${{ github.ref_name }}
         echo "GHR=${REF%/*}" >> $GITHUB_OUTPUT
-        
 
     # Notes on Cache: 
     # https://docs.docker.com/build/ci/github-actions/examples/#inline-cache
