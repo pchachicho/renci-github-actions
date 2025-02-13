@@ -41,6 +41,9 @@ jobs:
 ############################## flake8-linter ##############################
   flake8-linter:
     runs-on: ubuntu-latest
+    concurrency:
+      group: code-checks
+      cancel-in-progress: true
     # if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
     - uses: actions/checkout@v4
@@ -75,6 +78,9 @@ jobs:
 ############################## test-image-build ##############################
   test-image-build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: code-checks1
+      cancel-in-progress: true
     # if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
     - uses: actions/checkout@v4
