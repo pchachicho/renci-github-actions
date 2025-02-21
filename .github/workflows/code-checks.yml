@@ -35,15 +35,16 @@ on:
   #   types: [ opened, synchronize ]
     workflow_call:
 
+concurrency:
+  group: ${{ github.ref_name }}-codechecks1
+  cancel-in-progress: true
 
 
 jobs:
 ############################## flake8-linter ##############################
   flake8-linter:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.ref_name }}-codechecks1
-      cancel-in-progress: true
+    
     # if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
     - uses: actions/checkout@v4
@@ -78,9 +79,9 @@ jobs:
 ############################## test-image-build ##############################
   test-image-build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.ref_name }}-codechecks1
-      cancel-in-progress: true
+    # concurrency:
+    #   group: ${{ github.ref_name }}-codechecks1
+    #   cancel-in-progress: true
     # if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
     - uses: actions/checkout@v4
