@@ -17,7 +17,9 @@ on:
   #   - .gitignore
   #   - .dockerignore
   #   - .githooks
-
+concurrency:
+    group: ${{ github.head_ref || github.ref_name }}-${{ github.workflow }}-trivy1
+    cancel-in-progress: true
 jobs:
  trivy-pr-scan:
     runs-on: ubuntu-latest

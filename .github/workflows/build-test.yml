@@ -22,6 +22,9 @@ on:
       - master
       - main 
     types: [ opened, synchronize ]
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}-${{ github.workflow }}-build1
+  cancel-in-progress: true
 
 jobs:
   test-image-build:
