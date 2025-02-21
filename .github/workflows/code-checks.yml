@@ -36,7 +36,7 @@ on:
     workflow_call:
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}-codechecks1
+  group: ${{ github.ref_name }}-${{ github.workflow }}-codechecks1
   cancel-in-progress: true
 
 
